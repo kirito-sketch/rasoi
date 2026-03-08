@@ -70,6 +70,6 @@ export async function clearFreshIngredients(): Promise<void> {
   const { error } = await supabase
     .from('staples')
     .delete()
-    .eq('item_type', 'fresh')
+    .in('item_type', ['fresh', 'leftover'])
   if (error) throw error
 }

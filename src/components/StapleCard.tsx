@@ -18,13 +18,14 @@ export function StapleCard({ staple, onChange }: Props) {
   const [optimisticQty, setOptimisticQty] = useState(staple.quantity_level)
 
   async function handleToggleStock() {
-    const next = !optimisticStock
+    const prev = optimisticStock
+    const next = !prev
     setOptimisticStock(next)
     try {
       await toggleStapleStock(staple.id, next)
       onChange()
     } catch {
-      setOptimisticStock(optimisticStock)
+      setOptimisticStock(prev)
       toast.error('Could not update item.')
     }
   }
