@@ -2,13 +2,15 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { Camera } from 'lucide-react'
-import { getStaples, clearFreshIngredients } from '@/lib/db/staples'
+import { getStaples, clearFreshIngredients, addStaple } from '@/lib/db/staples'
 import type { Category, Staple } from '@/lib/types'
 import { StapleCard } from '@/components/StapleCard'
 import { AddIngredientSheet } from '@/components/AddIngredientSheet'
+import { CameraScanner } from '@/components/CameraScanner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { toast } from 'sonner'
 
 const CATEGORIES: Category[] = [
   'Grains & Lentils',
@@ -22,6 +24,7 @@ export default function PantryPage() {
   const [staples, setStaples] = useState<Staple[]>([])
   const [loading, setLoading] = useState(true)
   const [clearing, setClearing] = useState(false)
+  const [showScanner, setShowScanner] = useState(false)
 
   const reload = useCallback(async () => {
     try {
@@ -54,12 +57,26 @@ export default function PantryPage() {
     s => s.item_type === 'fresh' || s.item_type === 'leftover'
   )
 
+  async function handleScanComplete(ingredients: string[]) {
+    await Promise.all(
+      ingredients.map(name => addStaple(name, 'Fridge', 'fresh'))
+    )
+    await reload()
+    setShowScanner(false)
+    toast.success(`Added ${ingredients.length} ingredient${ingredients.length !== 1 ? 's' : ''}`)
+  }
+
   return (
     <div className="p-4 space-y-4">
+      {showScanner && (
+        <CameraScanner
+          onComplete={handleScanComplete}
+          onClose={() => setShowScanner(false)}
+        />
+      )}
       <div className="flex items-center justify-between pt-2">
         <h1 className="text-2xl font-bold">Pantry</h1>
-        {/* Camera scan placeholder — wired in Task 7 */}
-        <Button variant="outline" size="sm" disabled>
+        <Button variant="outline" size="sm" onClick={() => setShowScanner(true)}>
           <Camera size={15} className="mr-1" />
           Scan
         </Button>

@@ -68,9 +68,7 @@ export function AddIngredientSheet({ type, onAdded, trigger }: Props) {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        {trigger ?? defaultTrigger}
-      </SheetTrigger>
+      <SheetTrigger render={trigger ?? defaultTrigger} />
       <SheetContent side="bottom" className="rounded-t-2xl pb-8">
         <SheetHeader>
           <SheetTitle>Add {type === 'staple' ? 'staple' : 'ingredient'}</SheetTitle>
