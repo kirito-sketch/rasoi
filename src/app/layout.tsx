@@ -1,14 +1,11 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import './globals.css'
+import { BottomNav } from '@/components/BottomNav'
+import { Toaster } from '@/components/ui/sonner'
 
-const geistSans = Geist({
+const geist = Geist({
   variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
   subsets: ['latin'],
 })
 
@@ -20,17 +17,25 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: '#0f172a',
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+      <body className={`${geist.variable} font-sans antialiased bg-background text-foreground`}>
+        <div className="max-w-md mx-auto min-h-screen relative">
+          <main className="pb-20">
+            {children}
+          </main>
+          <BottomNav />
+        </div>
+        <Toaster />
       </body>
     </html>
   )
