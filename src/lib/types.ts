@@ -71,9 +71,7 @@ export interface Substitution {
 }
 
 export interface SessionPreferences {
-  time_available: 15 | 30 | 45 | 60
-  health_goal: 'High protein' | 'Balanced' | 'Low oil' | 'Low carb' | 'Flexible'
-  cuisine?: 'Indian' | 'Italian' | 'Mediterranean' | 'Asian' | 'Mexican' | 'Surprise me'
-  servings: 1 | 2 | 3
-  health_note?: string
+  timeMinutes: number
+  healthNote?: string
+  cuisine?: string  // undefined = "Anything" (ingredients drive suggestions)
 }
