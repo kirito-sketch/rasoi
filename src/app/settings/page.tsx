@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { getUtensils, toggleUtensil } from '@/lib/db/utensils'
 import type { Utensil } from '@/lib/types'
 import { Switch } from '@/components/ui/switch'
@@ -28,10 +29,11 @@ export default function SettingsPage() {
     try {
       await toggleUtensil(id, !current)
     } catch {
-      // Revert on failure
+      // Revert on failure and notify user
       setUtensils(prev =>
         prev.map(u => (u.id === id ? { ...u, available: current } : u))
       )
+      toast.error('Could not save change. Please try again.')
     }
   }
 
