@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft, Heart, Clock, ShoppingBag, CheckCircle2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { getFavourites, addFavourite, removeFavourite } from '@/lib/db/favourites'
 import type { Recipe } from '@/lib/types'
@@ -79,7 +78,7 @@ export default function RecipeDetailPage() {
         <button
           onClick={() => router.back()}
           aria-label="Go back"
-          className="p-2 -ml-2 rounded-full hover:bg-accent transition-colors"
+          className="p-2 -ml-2 rounded-full hover:bg-[#F0E6D3] transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
@@ -91,7 +90,7 @@ export default function RecipeDetailPage() {
         >
           <Heart
             className={`w-5 h-5 transition-colors ${
-              isFavourite ? 'fill-red-500 text-red-500' : 'text-muted-foreground'
+              isFavourite ? 'fill-[#C4621A] text-[#C4621A]' : 'text-[#8B7355]'
             }`}
           />
         </button>
@@ -99,23 +98,25 @@ export default function RecipeDetailPage() {
 
       {/* ── Recipe name ─────────────────────────────────────────── */}
       <div className="px-4 space-y-3">
-        <h1 className="text-2xl font-bold leading-tight">{recipe.name}</h1>
+        <h1 className="text-2xl font-bold leading-tight font-lora italic">{recipe.name}</h1>
 
         {/* Meta row */}
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary">{recipe.cuisine}</Badge>
-          <Badge variant={recipe.difficulty === 'Easy' ? 'outline' : 'secondary'}>
+          <span className="text-xs font-semibold tracking-wide uppercase" style={{ color: '#8B7355' }}>
+            {recipe.cuisine}
+          </span>
+          <span className="text-xs font-semibold tracking-wide uppercase" style={{ color: '#8B7355' }}>
             {recipe.difficulty}
-          </Badge>
-          <span className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Clock className="w-4 h-4 shrink-0" />
+          </span>
+          <span className="flex items-center gap-1 text-sm text-[#8B7355]">
+            <Clock className="w-4 h-4 shrink-0 text-[#8B7355]" />
             {recipe.total_time_mins} min
           </span>
         </div>
 
         {/* Health highlight pill */}
         {recipe.health_highlight && (
-          <span className="inline-block text-xs bg-primary/10 text-primary rounded-full px-3 py-1">
+          <span className="inline-block text-xs bg-[#C4621A]/10 text-[#C4621A] rounded-full px-3 py-1">
             {recipe.health_highlight}
           </span>
         )}
@@ -126,10 +127,10 @@ export default function RecipeDetailPage() {
 
       {/* ── Ingredients ─────────────────────────────────────────── */}
       <section className="px-4 mt-6">
-        <h2 className="text-lg font-semibold mb-3">Ingredients</h2>
+        <h2 className="text-lg font-semibold mb-3 font-lora italic">Ingredients</h2>
 
         {missingCount > 0 && (
-          <p className="text-xs text-muted-foreground mb-3">
+          <p className="text-xs text-[#8B7355] mb-3">
             Missing {missingCount} ingredient{missingCount > 1 ? 's' : ''} — check substitutions
             below
           </p>
@@ -144,7 +145,7 @@ export default function RecipeDetailPage() {
               }`}
             >
               {ing.is_staple ? (
-                <CheckCircle2 className="w-4 h-4 shrink-0 text-primary" />
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-[#C4621A]" />
               ) : (
                 <ShoppingBag className="w-4 h-4 shrink-0 text-muted-foreground" />
               )}
@@ -157,13 +158,13 @@ export default function RecipeDetailPage() {
 
       {/* ── Steps ───────────────────────────────────────────────── */}
       <section className="px-4 mt-6">
-        <h2 className="text-lg font-semibold mb-3">Steps</h2>
+        <h2 className="text-lg font-semibold mb-3 font-lora italic">Steps</h2>
 
         <div className="space-y-3">
           {recipe.steps.map((step, idx) => (
             <div key={idx} className="flex gap-3">
               {/* Step number circle */}
-              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center mt-0.5">
+              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[#C4621A] text-[#FDF8F0] text-xs font-bold flex items-center justify-center mt-0.5">
                 {idx + 1}
               </div>
               <Card className="flex-1">
@@ -179,7 +180,7 @@ export default function RecipeDetailPage() {
       {/* ── Substitutions ───────────────────────────────────────── */}
       {recipe.substitutions && recipe.substitutions.length > 0 && (
         <section className="px-4 mt-6">
-          <h2 className="text-lg font-semibold mb-3">Substitutions</h2>
+          <h2 className="text-lg font-semibold mb-3 font-lora italic">Substitutions</h2>
 
           <div className="space-y-2">
             {recipe.substitutions.map((sub, idx) => (
@@ -196,7 +197,7 @@ export default function RecipeDetailPage() {
       {/* ── Nutrition note ──────────────────────────────────────── */}
       {(recipe.estimated_protein || recipe.estimated_carbs || recipe.estimated_fat) && (
         <section className="px-4 mt-6">
-          <h2 className="text-lg font-semibold mb-3">Nutrition note</h2>
+          <h2 className="text-lg font-semibold mb-3 font-lora italic">Nutrition note</h2>
 
           <div className="flex flex-wrap gap-4 text-sm">
             {recipe.estimated_protein > 0 && (
@@ -224,7 +225,7 @@ export default function RecipeDetailPage() {
       {/* ── Tips ────────────────────────────────────────────────── */}
       {recipe.tips && recipe.tips.length > 0 && (
         <section className="px-4 mt-6">
-          <h2 className="text-lg font-semibold mb-3">Tips</h2>
+          <h2 className="text-lg font-semibold mb-3 font-lora italic">Tips</h2>
           <ul className="space-y-1.5">
             {recipe.tips.map((tip, idx) => (
               <li key={idx} className="text-sm text-muted-foreground flex gap-2">
