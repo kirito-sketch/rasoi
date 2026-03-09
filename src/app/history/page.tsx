@@ -47,7 +47,7 @@ function FavouriteCard({ recipe, onNavigate, onRemove }: FavouriteCardProps) {
   return (
     <div
       onClick={() => onNavigate(recipe)}
-      className="flex-shrink-0 w-36 rounded-xl border border-border bg-card p-3 cursor-pointer hover:bg-accent/50 transition-colors relative"
+      className="flex-shrink-0 w-36 rounded-xl border border-[#E8D5B7] bg-[#FAF3E4] p-3 cursor-pointer hover:bg-accent/50 transition-colors relative"
     >
       {/* Remove button */}
       <button
@@ -58,13 +58,13 @@ function FavouriteCard({ recipe, onNavigate, onRemove }: FavouriteCardProps) {
       >
         <Heart
           className={`w-3.5 h-3.5 transition-colors ${
-            removing ? 'text-muted-foreground' : 'fill-red-500 text-red-500'
+            removing ? 'text-muted-foreground' : 'fill-[#C4621A] text-[#C4621A]'
           }`}
         />
       </button>
 
       {/* Card content */}
-      <p className="font-medium text-sm truncate pr-5 leading-snug">{recipe.name}</p>
+      <p className="font-medium font-lora italic text-sm truncate pr-5 leading-snug">{recipe.name}</p>
       <p className="text-xs text-muted-foreground mt-1 truncate">{recipe.cuisine}</p>
     </div>
   )
@@ -149,10 +149,10 @@ export default function HistoryPage() {
     <div className="px-4 pt-6 pb-32 space-y-8">
       {/* ── Favourites strip ──────────────────────────────────────────────── */}
       <section>
-        <h2 className="text-lg font-semibold mb-3">Favourites</h2>
+        <h2 className="text-lg font-semibold font-lora italic mb-3">Favourites</h2>
 
         {favourites.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No favourites yet</p>
+          <p className="text-sm text-[#8B7355]">No favourites yet</p>
         ) : (
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
             {favourites.map((recipe) => (
@@ -169,10 +169,10 @@ export default function HistoryPage() {
 
       {/* ── Meal log ─────────────────────────────────────────────────────── */}
       <section>
-        <h2 className="text-lg font-semibold mb-3">Cooked recently</h2>
+        <h2 className="text-lg font-semibold font-lora italic mb-3">Cooked recently</h2>
 
         {history.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[#8B7355]">
             No meals cooked yet — start cooking!
           </p>
         ) : (
@@ -188,15 +188,15 @@ export default function HistoryPage() {
                   onClick={() => {
                     if (entry.recipe_data) handleNavigate(entry.recipe_data)
                   }}
-                  className={`flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3 ${
+                  className={`flex items-center justify-between rounded-xl border border-[#E8D5B7] bg-[#FAF3E4] px-4 py-3 ${
                     entry.recipe_data ? 'cursor-pointer hover:bg-accent/50 transition-colors' : ''
                   }`}
                 >
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-sm truncate">{name}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{cuisine}</p>
+                    <p className="text-xs text-[#8B7355] mt-0.5">{cuisine}</p>
                   </div>
-                  <span className="text-xs text-muted-foreground ml-4 shrink-0">
+                  <span className="text-xs text-[#8B7355] ml-4 shrink-0">
                     {formatDate(entry.cooked_at)}
                   </span>
                 </div>

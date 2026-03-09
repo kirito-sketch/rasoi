@@ -43,11 +43,11 @@ export default function SettingsPage() {
 
   return (
     <div className="p-4 space-y-6">
-      <h1 className="text-2xl font-bold pt-2">Settings</h1>
+      <h1 className="text-2xl font-bold font-lora pt-2">Settings</h1>
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Appearance</CardTitle>
+          <CardTitle className="text-base font-lora italic">Appearance</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
@@ -65,7 +65,7 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">My Kitchen</CardTitle>
+          <CardTitle className="text-base font-lora italic">My Kitchen</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {loading && (
@@ -80,7 +80,7 @@ export default function SettingsPage() {
           )}
 
           {error && (
-            <p className="text-sm text-muted-foreground">{error}</p>
+            <p className="text-sm text-[#8B7355]">{error}</p>
           )}
 
           {!loading && !error && utensils.map(utensil => (
@@ -97,7 +97,7 @@ export default function SettingsPage() {
           ))}
 
           {!loading && !error && utensils.length === 0 && (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-[#8B7355]">
               No utensils found. Set up your Supabase connection to get started.
             </p>
           )}
