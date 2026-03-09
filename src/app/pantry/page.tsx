@@ -75,7 +75,7 @@ export default function PantryPage() {
         />
       )}
       <div className="flex items-center justify-between pt-2">
-        <h1 className="text-2xl font-bold">Pantry</h1>
+        <h1 className="text-2xl font-bold font-lora">Pantry</h1>
         <Button variant="outline" size="sm" onClick={() => setShowScanner(true)} className="border-[#C4621A] text-[#C4621A] hover:bg-[#C4621A]/10">
           <Camera size={15} className="mr-1" />
           Scan
@@ -90,7 +90,7 @@ export default function PantryPage() {
           <TabsTrigger value="fresh" className="flex-1 data-[state=active]:text-[#C4621A]">
             Fresh / Today
             {freshItems.length > 0 && (
-              <span className="ml-1.5 text-xs bg-foreground text-background rounded-full px-1.5">
+              <span className="ml-1.5 text-xs bg-[#C4621A] text-[#FDF8F0] rounded-full px-1.5">
                 {freshItems.length}
               </span>
             )}

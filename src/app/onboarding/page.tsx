@@ -190,7 +190,7 @@ export default function OnboardingPage() {
         </Button>
         <button
           onClick={() => setStep('cuisines')}
-          className="w-full text-sm text-[#8B7355] py-2 hover:text-foreground transition-colors"
+          className="w-full text-sm text-[#8B7355] py-2 hover:text-[#C4621A] transition-colors"
         >
           ← Back
         </button>
