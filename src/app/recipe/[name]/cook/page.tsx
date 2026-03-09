@@ -91,7 +91,11 @@ export default function CookingModePage() {
         <CheckCircle2 className="w-20 h-20 text-primary" strokeWidth={1.5} />
 
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Well done!</h1>
+          <div className="text-center">
+            <p className="tracking-[0.3em] text-sm mb-2" style={{ color: '#C4621A' }}>— ✦ —</p>
+            <h2 className="font-lora italic text-3xl" style={{ color: '#2C1810' }}>Well done!</h2>
+            <p className="tracking-[0.3em] text-sm mt-2" style={{ color: '#C4621A' }}>— ✦ —</p>
+          </div>
           <p className="text-xl font-medium">{recipe.name}</p>
           <p className="text-sm text-muted-foreground">Saved to history</p>
         </div>
@@ -121,7 +125,7 @@ export default function CookingModePage() {
           <ArrowLeft className="w-5 h-5" />
         </button>
 
-        <h2 className="text-sm font-medium truncate max-w-[60%] text-center">
+        <h2 className="text-sm font-medium font-lora italic truncate max-w-[60%] text-center">
           {recipe.name}
         </h2>
 
@@ -131,19 +135,19 @@ export default function CookingModePage() {
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-1 bg-muted shrink-0">
+      <div className="w-full h-1 bg-[#E8D5B7] shrink-0">
         <div
-          className="h-full bg-primary transition-all duration-300"
+          className="h-full bg-[#C4621A] transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
 
       {/* Step content — scrollable */}
       <div className="flex-1 overflow-y-auto px-6 py-8 flex flex-col justify-center">
-        <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-4">
+        <p className="text-sm font-semibold text-[#C4621A] uppercase tracking-widest mb-4">
           Step {currentStep + 1}
         </p>
-        <p className="text-2xl leading-relaxed font-medium">
+        <p className="text-2xl leading-relaxed font-medium font-lora">
           {recipe.steps[currentStep]}
         </p>
       </div>
