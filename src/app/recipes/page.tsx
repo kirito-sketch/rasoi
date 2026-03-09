@@ -103,7 +103,7 @@ export default function RecipesPage() {
         <Skeleton className="h-4 w-32" />
         <div className="space-y-4 mt-4">
           {[0, 1, 2].map((i) => (
-            <Skeleton key={i} className="h-44 w-full rounded-xl" />
+            <Skeleton key={i} className="h-56 w-full rounded-xl" />
           ))}
         </div>
       </div>
@@ -139,9 +139,9 @@ export default function RecipesPage() {
     <div className="px-4 pt-6 pb-4 space-y-4">
       {/* Header */}
       <div>
-        <h1 className="text-xl font-bold">Recipes for you</h1>
+        <h1 className="text-xl font-bold font-lora italic">Recipes for you</h1>
         {subtitleParts.length > 0 && (
-          <p className="text-sm text-muted-foreground mt-0.5">
+          <p className="text-sm text-[#8B7355] mt-0.5">
             {subtitleParts.join(' · ')}
           </p>
         )}
