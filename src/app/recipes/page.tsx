@@ -155,6 +155,7 @@ export default function RecipesPage() {
             recipe={recipe}
             isFavourite={favourites.has(recipe.name)}
             onToggleFavourite={handleToggleFavourite}
+            onSelect={(r) => sessionStorage.setItem('rasoi_selected_recipe', JSON.stringify(r))}
           />
         ))}
       </div>

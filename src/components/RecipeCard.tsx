@@ -10,9 +10,10 @@ interface Props {
   recipe: Recipe
   isFavourite: boolean
   onToggleFavourite: (recipe: Recipe) => void
+  onSelect?: (recipe: Recipe) => void
 }
 
-export default function RecipeCard({ recipe, isFavourite, onToggleFavourite }: Props) {
+export default function RecipeCard({ recipe, isFavourite, onToggleFavourite, onSelect }: Props) {
   const encodedName = encodeURIComponent(recipe.name)
 
   return (
@@ -34,7 +35,11 @@ export default function RecipeCard({ recipe, isFavourite, onToggleFavourite }: P
       </button>
 
       {/* Clickable card body */}
-      <Link href={`/recipe/${encodedName}`} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-[inherit]">
+      <Link
+        href={`/recipe/${encodedName}`}
+        className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-[inherit]"
+        onClick={() => onSelect?.(recipe)}
+      >
         <CardContent className="p-4 pr-12">
           {/* Name */}
           <h3 className="font-bold text-base leading-snug mb-2 pr-1">{recipe.name}</h3>
