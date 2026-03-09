@@ -26,12 +26,18 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
-              className={`flex flex-1 flex-col items-center gap-1 py-3 text-xs transition-colors ${
+              className={`relative flex flex-1 flex-col items-center gap-1 py-3 text-xs transition-colors ${
                 isActive
-                  ? 'text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'text-[#C4621A]'
+                  : 'text-[#8B7355] hover:text-[#C4621A]'
               }`}
             >
+              {isActive && (
+                <span
+                  className="absolute top-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
+                  style={{ backgroundColor: '#C4621A' }}
+                />
+              )}
               <Icon
                 size={20}
                 strokeWidth={isActive ? 2.5 : 1.5}
