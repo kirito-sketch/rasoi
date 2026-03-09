@@ -48,13 +48,13 @@ export default function Home() {
         {/* Header */}
         <div className="flex flex-col gap-1 items-center text-center pt-4">
           <span className="text-4xl">👨‍🍳</span>
-          <h1 className="text-4xl font-bold tracking-tight mt-2">Rasoi</h1>
-          <p className="text-muted-foreground text-sm mt-1">What are we cooking today?</p>
+          <h1 className="text-4xl font-bold tracking-tight mt-2 font-lora">Rasoi</h1>
+          <p className="text-muted-foreground text-sm mt-1 font-lora italic">What are we cooking today?</p>
         </div>
 
         {/* Time Section */}
         <div className="flex flex-col gap-3">
-          <label className="text-sm font-medium">How much time do you have?</label>
+          <label className="text-sm font-medium font-lora italic">How much time do you have?</label>
           <div className="flex flex-wrap gap-2">
             {TIME_OPTIONS.map((mins) => (
               <button
@@ -63,8 +63,8 @@ export default function Home() {
                 className={cn(
                   'rounded-full border px-4 py-1.5 text-sm font-medium transition-colors',
                   timeMinutes === mins
-                    ? 'bg-foreground text-background border-foreground'
-                    : 'border-border text-muted-foreground hover:border-foreground/40'
+                    ? 'bg-[#C4621A] text-[#FDF8F0] border-[#C4621A]'
+                    : 'border-[#E8D5B7] text-[#8B7355] hover:border-[#C4621A]/40'
                 )}
               >
                 {mins} min
@@ -73,9 +73,11 @@ export default function Home() {
           </div>
         </div>
 
+        <hr className="border-[#E8D5B7]" />
+
         {/* Health Note Section */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs text-muted-foreground font-medium">Any health notes?</label>
+          <label className="text-xs text-muted-foreground font-medium font-lora italic">Any health notes?</label>
           <Input
             placeholder="e.g. feeling bloated, avoiding spicy"
             value={healthNote}
@@ -83,13 +85,15 @@ export default function Home() {
           />
         </div>
 
+        <hr className="border-[#E8D5B7]" />
+
         {/* Cuisine Mood Section */}
         <div className="flex flex-col gap-2">
           <button
             onClick={() => setCuisineOpen((prev) => !prev)}
             className="flex items-center justify-between text-sm font-medium w-full"
           >
-            <span>
+            <span className="font-lora italic">
               Cuisine mood{' '}
               <span className="text-muted-foreground font-normal">— {cuisine}</span>
             </span>
@@ -109,8 +113,8 @@ export default function Home() {
                   className={cn(
                     'rounded-full border px-4 py-1.5 text-sm font-medium transition-colors',
                     cuisine === option
-                      ? 'bg-foreground text-background border-foreground'
-                      : 'border-border text-muted-foreground hover:border-foreground/40'
+                      ? 'bg-[#C4621A] text-[#FDF8F0] border-[#C4621A]'
+                      : 'border-[#E8D5B7] text-[#8B7355] hover:border-[#C4621A]/40'
                   )}
                 >
                   {option}
