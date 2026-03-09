@@ -94,13 +94,13 @@ export default function OnboardingPage() {
       <div className="p-4 space-y-6 pt-8">
         {/* Progress dots */}
         <div className="flex justify-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-foreground" />
-          <div className="w-2 h-2 rounded-full bg-muted" />
+          <div className="w-3 h-3 rounded-full bg-[#C4621A]" />
+          <div className="w-3 h-3 rounded-full bg-[#E8D5B7]" />
         </div>
 
         <div>
-          <h1 className="text-2xl font-bold">Welcome to Rasoi</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="font-lora text-2xl font-bold">Welcome to Rasoi</h1>
+          <p className="font-lora italic text-muted-foreground mt-1">
             Let&apos;s set up your kitchen in 2 minutes.
           </p>
         </div>
@@ -117,8 +117,8 @@ export default function OnboardingPage() {
                 onClick={() => toggleCuisine(cuisine)}
                 className={`px-4 py-2 rounded-full text-sm border transition-colors ${
                   selectedCuisines.has(cuisine)
-                    ? 'bg-foreground text-background border-foreground'
-                    : 'border-border text-foreground hover:border-foreground/50'
+                    ? 'bg-[#C4621A] text-[#FDF8F0] border-[#C4621A]'
+                    : 'border-[#E8D5B7] text-[#8B7355] hover:border-[#C4621A]/40'
                 }`}
               >
                 {CUISINE_LABELS[cuisine]}
@@ -140,13 +140,13 @@ export default function OnboardingPage() {
     <div className="p-4 space-y-6 pt-8">
       {/* Progress dots */}
       <div className="flex justify-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-muted" />
-        <div className="w-2 h-2 rounded-full bg-foreground" />
+        <div className="w-3 h-3 rounded-full bg-[#E8D5B7]" />
+        <div className="w-3 h-3 rounded-full bg-[#C4621A]" />
       </div>
 
       <div>
-        <h1 className="text-2xl font-bold">Your starter pantry</h1>
-        <p className="text-muted-foreground mt-1">
+        <h1 className="font-lora text-2xl font-bold">Your starter pantry</h1>
+        <p className="font-lora italic text-muted-foreground mt-1">
           Deselect anything you don&apos;t have.
         </p>
       </div>
@@ -157,7 +157,7 @@ export default function OnboardingPage() {
           if (items.length === 0) return null
           return (
             <div key={cat}>
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+              <p className="font-lora italic text-xs font-semibold text-[#2C1810] uppercase tracking-wide mb-2">
                 {cat}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -167,8 +167,8 @@ export default function OnboardingPage() {
                     onClick={() => toggleItem(item.name)}
                     className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
                       item.selected
-                        ? 'bg-foreground text-background border-foreground'
-                        : 'border-border text-muted-foreground line-through opacity-50'
+                        ? 'bg-[#C4621A] text-[#FDF8F0] border-[#C4621A]'
+                        : 'border-[#E8D5B7] text-[#8B7355] line-through hover:border-[#C4621A]/40'
                     }`}
                   >
                     {item.name}
@@ -190,7 +190,7 @@ export default function OnboardingPage() {
         </Button>
         <button
           onClick={() => setStep('cuisines')}
-          className="w-full text-sm text-muted-foreground py-2 hover:text-foreground transition-colors"
+          className="w-full text-sm text-[#8B7355] py-2 hover:text-foreground transition-colors"
         >
           ← Back
         </button>
