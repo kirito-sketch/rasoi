@@ -3,6 +3,7 @@ import { Geist } from 'next/font/google'
 import './globals.css'
 import { BottomNav } from '@/components/BottomNav'
 import { Toaster } from '@/components/ui/sonner'
+import { ThemeProvider } from 'next-themes'
 
 const geist = Geist({
   variable: '--font-geist-sans',
@@ -29,13 +30,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geist.variable} font-sans antialiased bg-background text-foreground`}>
-        <div className="max-w-md mx-auto min-h-screen relative">
-          <main className="pb-20">
-            {children}
-          </main>
-          <BottomNav />
-        </div>
-        <Toaster />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="max-w-md mx-auto min-h-screen relative">
+            <main className="pb-20">
+              {children}
+            </main>
+            <BottomNav />
+          </div>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { useTheme } from 'next-themes'
 import { getUtensils, toggleUtensil } from '@/lib/db/utensils'
 import type { Utensil } from '@/lib/types'
 import { Switch } from '@/components/ui/switch'
@@ -10,6 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme()
+  const isDark = theme === 'dark'
+
   const [utensils, setUtensils] = useState<Utensil[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -40,6 +44,24 @@ export default function SettingsPage() {
   return (
     <div className="p-4 space-y-6">
       <h1 className="text-2xl font-bold pt-2">Settings</h1>
+
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Appearance</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="dark-mode" className="cursor-pointer">
+              Dark mode
+            </Label>
+            <Switch
+              id="dark-mode"
+              checked={isDark}
+              onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader className="pb-3">
