@@ -53,14 +53,16 @@ export function StapleCard({ staple, onChange }: Props) {
 
   return (
     <div
-      className={`flex items-center justify-between p-3 rounded-lg border transition-opacity ${
-        optimisticStock ? 'opacity-100' : 'opacity-40'
-      }`}
+      className="flex items-center justify-between p-3 rounded-lg border bg-[#FAF3E4]"
     >
       <div className="flex-1 min-w-0">
         <button
           onClick={handleToggleStock}
-          className="text-sm font-medium text-left hover:text-primary transition-colors truncate block w-full"
+          className={`text-sm font-medium text-left transition-colors truncate block w-full ${
+            !optimisticStock
+              ? 'line-through text-[#8B7355]'
+              : 'hover:text-[#C4621A]'
+          }`}
         >
           {staple.name}
           {!optimisticStock && (
@@ -75,8 +77,8 @@ export function StapleCard({ staple, onChange }: Props) {
                 onClick={() => handleQuantityChange(level)}
                 className={`text-xs px-2 py-0.5 rounded-full border transition-colors ${
                   optimisticQty === level
-                    ? 'bg-foreground text-background border-foreground'
-                    : 'border-border text-muted-foreground hover:border-foreground/40'
+                    ? 'bg-[#C4621A] text-[#FDF8F0] border-[#C4621A]'
+                    : 'border-[#E8D5B7] text-[#8B7355] hover:border-[#C4621A]/40'
                 }`}
               >
                 {level}

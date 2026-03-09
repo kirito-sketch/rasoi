@@ -76,7 +76,7 @@ export default function PantryPage() {
       )}
       <div className="flex items-center justify-between pt-2">
         <h1 className="text-2xl font-bold">Pantry</h1>
-        <Button variant="outline" size="sm" onClick={() => setShowScanner(true)}>
+        <Button variant="outline" size="sm" onClick={() => setShowScanner(true)} className="border-[#C4621A] text-[#C4621A] hover:bg-[#C4621A]/10">
           <Camera size={15} className="mr-1" />
           Scan
         </Button>
@@ -84,10 +84,10 @@ export default function PantryPage() {
 
       <Tabs defaultValue="staples">
         <TabsList className="w-full">
-          <TabsTrigger value="staples" className="flex-1">
+          <TabsTrigger value="staples" className="flex-1 data-[state=active]:text-[#C4621A]">
             Staples
           </TabsTrigger>
-          <TabsTrigger value="fresh" className="flex-1">
+          <TabsTrigger value="fresh" className="flex-1 data-[state=active]:text-[#C4621A]">
             Fresh / Today
             {freshItems.length > 0 && (
               <span className="ml-1.5 text-xs bg-foreground text-background rounded-full px-1.5">
@@ -111,7 +111,7 @@ export default function PantryPage() {
                 if (items.length === 0) return null
                 return (
                   <div key={cat}>
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                    <p className="text-xs font-semibold text-[#2C1810] uppercase tracking-wide mb-2 font-lora italic">
                       {cat}
                     </p>
                     <div className="space-y-1.5">
@@ -150,7 +150,7 @@ export default function PantryPage() {
                 <button
                   onClick={handleClearFresh}
                   disabled={clearing}
-                  className="w-full text-sm text-muted-foreground py-2 hover:text-destructive transition-colors"
+                  className="w-full text-sm text-[#C4621A]/70 py-2 hover:text-[#C4621A] transition-colors"
                 >
                   {clearing ? 'Clearing...' : 'Clear today\'s fresh items'}
                 </button>

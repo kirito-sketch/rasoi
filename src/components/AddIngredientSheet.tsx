@@ -71,7 +71,7 @@ export function AddIngredientSheet({ type, onAdded, trigger }: Props) {
       <SheetTrigger render={trigger ?? defaultTrigger} />
       <SheetContent side="bottom" className="rounded-t-2xl pb-8">
         <SheetHeader>
-          <SheetTitle>Add {type === 'staple' ? 'staple' : 'ingredient'}</SheetTitle>
+          <SheetTitle className="font-lora italic">Add {type === 'staple' ? 'staple' : 'ingredient'}</SheetTitle>
         </SheetHeader>
         <div className="space-y-4 mt-4">
           <div>
