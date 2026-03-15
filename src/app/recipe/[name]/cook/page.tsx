@@ -14,6 +14,7 @@ export default function CookingModePage() {
   const [loaded, setLoaded] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
   const [completed, setCompleted] = useState(false)
+  const [exitPrompt, setExitPrompt] = useState(false)
 
   // Load recipe from sessionStorage
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function CookingModePage() {
 
   const totalSteps = recipe.steps.length
   const isLastStep = currentStep === totalSteps - 1
-  const progress = totalSteps > 0 ? ((currentStep) / totalSteps) * 100 : 0
+  const progress = totalSteps > 0 ? ((currentStep + 1) / totalSteps) * 100 : 0
 
   function handleNext() {
     if (isLastStep) {
@@ -92,9 +93,9 @@ export default function CookingModePage() {
 
         <div className="space-y-2">
           <div className="text-center">
-            <p className="tracking-[0.3em] text-sm mb-2" style={{ color: '#C4621A' }}>— ✦ —</p>
-            <h2 className="font-lora italic text-3xl" style={{ color: '#2C1810' }}>Well done!</h2>
-            <p className="tracking-[0.3em] text-sm mt-2" style={{ color: '#C4621A' }}>— ✦ —</p>
+            <p className="tracking-[0.3em] text-sm mb-2 text-primary">— ✦ —</p>
+            <h2 className="font-lora italic text-3xl text-foreground">Well done!</h2>
+            <p className="tracking-[0.3em] text-sm mt-2 text-primary">— ✦ —</p>
           </div>
           <p className="text-xl font-medium">{recipe.name}</p>
           <p className="text-sm text-muted-foreground">Saved to history</p>
@@ -115,10 +116,29 @@ export default function CookingModePage() {
   // ── Cooking screen ──────────────────────────────────────────────────────
   return (
     <div className="fixed inset-0 bg-background flex flex-col z-50">
+      {/* Exit confirmation overlay */}
+      {exitPrompt && (
+        <div className="absolute inset-0 z-10 bg-background/90 flex flex-col items-center justify-center gap-4 px-8">
+          <p className="font-lora text-xl font-semibold text-center">Exit cooking mode?</p>
+          <p className="text-sm text-muted-foreground text-center">Your progress won&apos;t be saved.</p>
+          <div className="flex gap-3 w-full max-w-xs">
+            <Button variant="outline" className="flex-1" onClick={() => setExitPrompt(false)}>
+              Keep cooking
+            </Button>
+            <Button variant="destructive" className="flex-1" onClick={() => router.back()}>
+              Exit
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <div className="flex items-center justify-between px-4 pt-safe pt-4 pb-2 shrink-0">
+      <div
+        className="flex items-center justify-between px-4 pb-2 shrink-0"
+        style={{ paddingTop: 'max(1rem, env(safe-area-inset-top, 0px))' }}
+      >
         <button
-          onClick={() => router.back()}
+          onClick={() => setExitPrompt(true)}
           aria-label="Exit cooking mode"
           className="p-2 -ml-2 rounded-full hover:bg-accent transition-colors"
         >
@@ -135,16 +155,25 @@ export default function CookingModePage() {
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-1 bg-[#E8D5B7] shrink-0">
+      <div className="w-full h-1 bg-border shrink-0">
         <div
-          className="h-full bg-[#C4621A] transition-all duration-300"
+          role="progressbar"
+          aria-valuenow={Math.round(progress)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label="Cooking progress"
+          className="h-full bg-primary transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
 
       {/* Step content — scrollable */}
-      <div className="flex-1 overflow-y-auto px-6 py-8 flex flex-col justify-center">
-        <p className="text-sm font-semibold text-[#C4621A] uppercase tracking-widest mb-4">
+      <div
+        className="flex-1 overflow-y-auto px-6 py-8 flex flex-col justify-center"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-4">
           Step {currentStep + 1}
         </p>
         <p className="text-2xl leading-relaxed font-medium font-lora">
@@ -153,7 +182,10 @@ export default function CookingModePage() {
       </div>
 
       {/* Navigation — fixed at bottom */}
-      <div className="shrink-0 px-4 pb-safe pb-8 pt-4 flex gap-3 border-t bg-background">
+      <div
+        className="shrink-0 px-4 pt-4 flex gap-3 border-t bg-background"
+        style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 0px))' }}
+      >
         <Button
           variant="outline"
           size="lg"

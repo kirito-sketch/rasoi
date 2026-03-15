@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import {
   buildStarterPantry,
@@ -10,6 +11,7 @@ import {
 import { bulkAddStaples } from '@/lib/db/staples'
 import type { Category } from '@/lib/types'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 const CUISINE_LABELS: Record<CuisineKey, string> = {
   Indian: 'Indian',
@@ -44,8 +46,11 @@ export default function OnboardingPage() {
     setSelectedCuisines(prev => {
       const next = new Set(prev)
       if (next.has(cuisine)) {
-        // Keep at least 1 selected
-        if (next.size > 1) next.delete(cuisine)
+        if (next.size > 1) {
+          next.delete(cuisine)
+        } else {
+          toast.error('Select at least one cuisine.')
+        }
       } else {
         next.add(cuisine)
       }
@@ -81,8 +86,8 @@ export default function OnboardingPage() {
       localStorage.setItem('rasoi_onboarded', 'true')
       router.push('/')
     } catch {
-      // Supabase not configured yet — mark onboarded anyway so user can proceed
       localStorage.setItem('rasoi_onboarded', 'true')
+      toast.error("Pantry save failed — you can add items manually from the Pantry tab.")
       router.push('/')
     } finally {
       setSaving(false)
@@ -93,9 +98,9 @@ export default function OnboardingPage() {
     return (
       <div className="p-4 space-y-6 pt-8">
         {/* Progress dots */}
-        <div className="flex justify-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-[#C4621A]" />
-          <div className="w-3 h-3 rounded-full bg-[#E8D5B7]" />
+        <div role="group" aria-label="Step 1 of 2" className="flex justify-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-primary" aria-hidden="true" />
+          <div className="w-3 h-3 rounded-full bg-border" aria-hidden="true" />
         </div>
 
         <div>
@@ -115,10 +120,11 @@ export default function OnboardingPage() {
               <button
                 key={cuisine}
                 onClick={() => toggleCuisine(cuisine)}
-                className={`px-4 py-2 rounded-full text-sm border transition-colors ${
+                aria-pressed={selectedCuisines.has(cuisine)}
+                className={`min-h-[44px] px-4 py-2 rounded-full text-sm border transition-colors ${
                   selectedCuisines.has(cuisine)
-                    ? 'bg-[#C4621A] text-[#FDF8F0] border-[#C4621A]'
-                    : 'border-[#E8D5B7] text-[#8B7355] hover:border-[#C4621A]/40'
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'border-border text-muted-foreground hover:border-primary/40'
                 }`}
               >
                 {CUISINE_LABELS[cuisine]}
@@ -139,9 +145,9 @@ export default function OnboardingPage() {
   return (
     <div className="p-4 space-y-6 pt-8">
       {/* Progress dots */}
-      <div className="flex justify-center gap-2">
-        <div className="w-3 h-3 rounded-full bg-[#E8D5B7]" />
-        <div className="w-3 h-3 rounded-full bg-[#C4621A]" />
+      <div role="group" aria-label="Step 2 of 2" className="flex justify-center gap-2">
+        <div className="w-3 h-3 rounded-full bg-border" aria-hidden="true" />
+        <div className="w-3 h-3 rounded-full bg-primary" aria-hidden="true" />
       </div>
 
       <div>
@@ -157,7 +163,7 @@ export default function OnboardingPage() {
           if (items.length === 0) return null
           return (
             <div key={cat}>
-              <p className="font-lora italic text-xs font-semibold text-[#2C1810] uppercase tracking-wide mb-2">
+              <p className="font-lora italic text-xs font-semibold text-foreground uppercase tracking-wide mb-2">
                 {cat}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -165,10 +171,11 @@ export default function OnboardingPage() {
                   <button
                     key={item.name}
                     onClick={() => toggleItem(item.name)}
-                    className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
+                    aria-pressed={item.selected}
+                    className={`min-h-[44px] px-3 py-1.5 rounded-full text-sm border transition-colors ${
                       item.selected
-                        ? 'bg-[#C4621A] text-[#FDF8F0] border-[#C4621A]'
-                        : 'border-[#E8D5B7] text-[#8B7355] line-through hover:border-[#C4621A]/40'
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'border-border text-muted-foreground line-through hover:border-primary/40'
                     }`}
                   >
                     {item.name}
@@ -190,9 +197,11 @@ export default function OnboardingPage() {
         </Button>
         <button
           onClick={() => setStep('cuisines')}
-          className="w-full text-sm text-[#8B7355] py-2 hover:text-[#C4621A] transition-colors"
+          aria-label="Go back to cuisine selection"
+          className="w-full text-sm text-muted-foreground py-2 hover:text-primary transition-colors flex items-center justify-center gap-1"
         >
-          ← Back
+          <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+          Back
         </button>
       </div>
     </div>

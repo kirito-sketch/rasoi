@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Heart } from 'lucide-react'
 import { toast } from 'sonner'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Button } from '@/components/ui/button'
 import { getFavourites, removeFavourite } from '@/lib/db/favourites'
 import { getMealHistory } from '@/lib/db/history'
 import type { Recipe, MealHistory } from '@/lib/types'
@@ -19,7 +20,7 @@ function formatDate(iso: string): string {
 
   if (date.toDateString() === today.toDateString()) return 'Today'
   if (date.toDateString() === yesterday.toDateString()) return 'Yesterday'
-  return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+  return date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })
 }
 
 // ── Favourite compact card ────────────────────────────────────────────────────
@@ -46,19 +47,22 @@ function FavouriteCard({ recipe, onNavigate, onRemove }: FavouriteCardProps) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={() => onNavigate(recipe)}
-      className="flex-shrink-0 w-36 rounded-xl border border-[#E8D5B7] bg-[#FAF3E4] p-3 cursor-pointer hover:bg-accent/50 transition-colors relative"
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(recipe) } }}
+      className="flex-shrink-0 w-36 rounded-xl border border-border bg-card p-3 cursor-pointer hover:bg-accent/50 transition-colors relative"
     >
       {/* Remove button */}
       <button
         onClick={handleRemove}
         disabled={removing}
         aria-label="Remove from favourites"
-        className="absolute top-2 right-2 p-1 rounded-full hover:bg-muted transition-colors"
+        className="absolute top-0 right-0 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full hover:bg-muted transition-colors"
       >
         <Heart
           className={`w-3.5 h-3.5 transition-colors ${
-            removing ? 'text-muted-foreground' : 'fill-[#C4621A] text-[#C4621A]'
+            removing ? 'text-muted-foreground' : 'fill-primary text-primary'
           }`}
         />
       </button>
@@ -80,19 +84,23 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const [favs, hist] = await Promise.all([getFavourites(), getMealHistory()])
-        setFavourites(favs)
-        setHistory(hist as MealHistory[])
-      } catch {
-        setError('Failed to load history. Please try again.')
-      } finally {
-        setLoading(false)
-      }
+  async function load() {
+    setLoading(true)
+    setError(null)
+    try {
+      const [favs, hist] = await Promise.all([getFavourites(), getMealHistory()])
+      setFavourites(favs)
+      setHistory(hist as MealHistory[])
+    } catch {
+      setError('Failed to load history. Please try again.')
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     load()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleNavigate = (recipe: Recipe) => {
@@ -137,8 +145,11 @@ export default function HistoryPage() {
 
   if (error) {
     return (
-      <div className="px-4 pt-6">
+      <div className="px-4 pt-6 space-y-3">
         <p className="text-destructive text-sm">{error}</p>
+        <Button size="sm" onClick={load}>
+          Try again
+        </Button>
       </div>
     )
   }
@@ -152,7 +163,12 @@ export default function HistoryPage() {
         <h2 className="text-lg font-semibold font-lora italic mb-3">Favourites</h2>
 
         {favourites.length === 0 ? (
-          <p className="text-sm text-[#8B7355]">No favourites yet</p>
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">No favourites yet</p>
+            <Button variant="outline" size="sm" onClick={() => router.push('/')}>
+              Find a recipe to save
+            </Button>
+          </div>
         ) : (
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
             {favourites.map((recipe) => (
@@ -172,9 +188,12 @@ export default function HistoryPage() {
         <h2 className="text-lg font-semibold font-lora italic mb-3">Cooked recently</h2>
 
         {history.length === 0 ? (
-          <p className="text-sm text-[#8B7355]">
-            No meals cooked yet — start cooking!
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">No meals cooked yet.</p>
+            <Button variant="outline" size="sm" onClick={() => router.push('/')}>
+              Start cooking
+            </Button>
+          </div>
         ) : (
           <div className="space-y-3">
             {history.map((entry) => {
@@ -185,18 +204,24 @@ export default function HistoryPage() {
               return (
                 <div
                   key={entry.id}
-                  onClick={() => {
-                    if (entry.recipe_data) handleNavigate(entry.recipe_data)
+                  role={entry.recipe_data ? 'button' : undefined}
+                  tabIndex={entry.recipe_data ? 0 : undefined}
+                  onClick={() => { if (entry.recipe_data) handleNavigate(entry.recipe_data) }}
+                  onKeyDown={(e) => {
+                    if (entry.recipe_data && (e.key === 'Enter' || e.key === ' ')) {
+                      e.preventDefault()
+                      handleNavigate(entry.recipe_data)
+                    }
                   }}
-                  className={`flex items-center justify-between rounded-xl border border-[#E8D5B7] bg-[#FAF3E4] px-4 py-3 ${
+                  className={`flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3 ${
                     entry.recipe_data ? 'cursor-pointer hover:bg-accent/50 transition-colors' : ''
                   }`}
                 >
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-sm truncate">{name}</p>
-                    <p className="text-xs text-[#8B7355] mt-0.5">{cuisine}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{cuisine}</p>
                   </div>
-                  <span className="text-xs text-[#8B7355] ml-4 shrink-0">
+                  <span className="text-xs text-muted-foreground ml-4 shrink-0">
                     {formatDate(entry.cooked_at)}
                   </span>
                 </div>

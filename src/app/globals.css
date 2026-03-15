@@ -122,6 +122,10 @@
   font-family: var(--font-lora), Georgia, serif;
 }
 
+/* Safe-area padding utilities for fullscreen/fixed views */
+.pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
